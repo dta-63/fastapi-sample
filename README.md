@@ -13,11 +13,11 @@ Example of a python microservices using FastApi framework
 
 - [x] Service documentation (Open api)
 - [x] Logger
-- [x] Multiple environments with configuration file
+- [ ] Multiple environments with configuration file
 - [x] Docker
 - [ ] Gitlab CI
 - [ ] Mongo connector
-- [x] Authentication (OIDC)
+- [ ] Authentication (OIDC)
 - [ ] Call other Web service
 - [ ] Unit test
 - [ ] Test coverage
