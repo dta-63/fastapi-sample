@@ -1,15 +1,13 @@
 import os
 import uvicorn
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from logging.config import fileConfig
 from dotenv import load_dotenv
-
-from api.items import items
-from api.others import others
-
-from tools.mongo_utils import connect, disconnect
-from tools.oidc import Auth
+from api import router as api_router
+from tools.mongo import connect, disconnect
+from tools.exceptions import http_error_handler
+from starlette.exceptions import HTTPException
 
 
 load_dotenv()
@@ -22,8 +20,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(items, prefix="/items", tags=["items"], dependencies=[Depends(Auth())])
-app.include_router(others, prefix="/others", tags=["others"])
+app.add_exception_handler(HTTPException, http_error_handler)
+
+app.include_router(api_router)
 
 app.add_event_handler("startup", connect)
 app.add_event_handler("shutdown", disconnect)
