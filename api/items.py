@@ -11,6 +11,7 @@ items = APIRouter()
 @items.get("/", response_model=List[Item])
 async def read_items(db: AsyncIOMotorClient = Depends(get_db)):
     # TODO: Fix TypeError: object AsyncIOMotorCursor can't be used in 'await' expression
+    # TODO: return _id as id
     return await db.test.test_collection.find()
 
 
@@ -30,6 +31,7 @@ async def create_item(
 
 @items.get("/{id}", response_model=Item)
 async def read_item(id: str, db: AsyncIOMotorClient = Depends(get_db)):
+    # TODO: return _id as id
     return await db.test.test_collection.find_one({"_id": ObjectId(id)})
 
 
