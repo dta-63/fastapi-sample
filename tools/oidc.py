@@ -8,7 +8,10 @@ from jose import jwt, jwk, JWTError
 from jose.utils import base64url_decode
 from pydantic import BaseModel
 from starlette.requests import Request
+from cachetools import cached, TTLCache
 
+
+cache = TTLCache(maxsize=100, ttl=300)
 url = "{}/realms/{}/protocol/openid-connect".format(
     os.getenv('SSO_URL'),
     os.getenv('SSO_REALM')
@@ -30,6 +33,11 @@ class User(BaseModel):
     email: str
     realm_access: Any
     resource_access: Any
+
+
+@cached(cache)
+def get_jwks():
+    return requests.get("{}/certs".format(url)).json()
 
 
 class Auth(OAuth2PasswordBearer):
@@ -54,7 +62,7 @@ class Auth(OAuth2PasswordBearer):
             raise unauthorized
         scheme, _, token = authorization.partition(" ")
         try:
-            jwks = requests.get("{}/certs".format(url)).json()
+            jwks = get_jwks()
             valid = self.verify_jwt(token, jwks)
             if valid:
                 user = User(**jwt.get_unverified_claims(token))
