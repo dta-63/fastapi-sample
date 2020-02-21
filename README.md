@@ -16,8 +16,8 @@ Example of a python microservices using FastApi framework
 - [x] Multiple environments with dotenv
 - [x] Docker
 - [x] Mongo connector with Motor
-- [x] Authentication check
-- [x] Authentication roles check
+- [x] Authentication check (Test with keycloak)
+- [x] Authentication roles check (Test with keycloak)
 - [ ] Gitlab CI
 - [ ] Unit test
 - [ ] Test coverage

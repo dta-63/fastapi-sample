@@ -7,8 +7,6 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, jwk, JWTError
 from jose.utils import base64url_decode
 from pydantic import BaseModel
-
-
 from starlette.requests import Request
 
 url = "{}/realms/{}/protocol/openid-connect".format(
@@ -39,9 +37,7 @@ class Auth(OAuth2PasswordBearer):
         self.roles = set(roles)
         super().__init__(tokenUrl="{}/token".format(url))
 
-    async def __call__(self, request: Request) -> User:
-        authorization: str = request.headers.get("Authorization")
-        scheme, _, token = authorization.partition(" ")
+    def __call__(self, request: Request) -> User:
         unauthorized = HTTPException(
             status_code=401,
             detail="Invalid token",
@@ -52,6 +48,11 @@ class Auth(OAuth2PasswordBearer):
             detail="Forbidden",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+        authorization: str = request.headers.get("Authorization")
+        if authorization is None:
+            raise unauthorized
+        scheme, _, token = authorization.partition(" ")
         try:
             jwks = requests.get("{}/certs".format(url)).json()
             valid = self.verify_jwt(token, jwks)
