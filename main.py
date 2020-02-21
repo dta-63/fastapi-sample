@@ -1,7 +1,9 @@
 import uvicorn
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+from api.items import items
+from api.others import others
+
 
 app = FastAPI(
     title="Service example",
@@ -9,18 +11,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
-
-class Item(BaseModel):
-    name: str
-
-
-@app.get("/items/{id}")
-async def read_item(id: int):
-    return {"id": id}
-
-@app.put("/items/{id}")
-async def update_item(id: int, item: Item):
-    return {"name": item.name, "id": id}
+app.include_router(items, prefix="/items", tags=["items"])
+app.include_router(others, prefix="/others", tags=["others"])
 
 
 if __name__ == "__main__":
