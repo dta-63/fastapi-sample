@@ -1,2 +1,6 @@
 fastapi
 uvicorn
+requests
+python-jose[cryptography]
+motor
+python-dotenv
