@@ -30,7 +30,8 @@ Example of a python microservices using FastApi framework
 - Copy and set `.env-sample` to `.env`, edit variables
 - Run `python main.py` or use a launcher in VScode for example
 - Access to http://127.0.0.1:8080/
-- Access to http://127.0.0.1:8080/docs
+- Access to http://127.0.0.1:8080/docs for swagger
+- Access to http://127.0.0.1:8080/redoc for Redoc
 
 ## Helpfull links
 
