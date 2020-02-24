@@ -8,7 +8,10 @@ jobs:
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
+          name: Setup VirtualEnv
           command: |
+            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=fastapi-sample' >> $BASH_ENV 
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
@@ -21,3 +24,10 @@ jobs:
           command: |
             . venv/bin/activate
             pytest
+      - run:
+          name: Build  Docker image
+          command: |
+            . venv/bin/activate
+            docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push $DOCKER_LOGIN/$IMAGE_NAME:$TAG
