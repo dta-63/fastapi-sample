@@ -24,8 +24,3 @@ jobs:
           command: |
             . venv/bin/activate
             pytest
-      - run:
-          name: Build  Docker image
-          command: |
-            . venv/bin/activate
-            docker build -t $IMAGE_NAME:$TAG .
