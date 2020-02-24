@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from .items import items as items_router
 from .others import others as others_router
-from tools.oidc import Auth
+from tools.security import Auth
 
 router = APIRouter()
 

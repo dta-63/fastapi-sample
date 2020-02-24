@@ -21,7 +21,7 @@ Example of a python microservices using FastApi framework
 - [ ] Gitlab CI
 - [ ] Unit test
 - [ ] Test coverage
-- [ ] Cache
+- [x] Cache
 - [ ] Kafka connector
 
 ## Start

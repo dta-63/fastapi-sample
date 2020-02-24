@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from api.models.item import Item, ItemIn
-from tools.oidc import Auth, User
+from tools.security import Auth, User
 from tools.mongo import get_db, AsyncIOMotorClient
+from tools.serialization import serialize
 from bson import ObjectId
 
 items = APIRouter()
@@ -10,8 +11,9 @@ items = APIRouter()
 
 @items.get("/", response_model=List[Item])
 async def read_items(db: AsyncIOMotorClient = Depends(get_db)):
-    # TODO: return _id as id
-    return await db.test.test_collection.find().to_list(length=100)
+    return serialize(
+        await db.test.test_collection.find().to_list(length=100)
+    )
 
 
 @items.post("/", response_model=Item)
@@ -30,11 +32,13 @@ async def create_item(
 
 @items.get("/{id}", response_model=Item)
 async def read_item(id: str, db: AsyncIOMotorClient = Depends(get_db)):
-    # TODO: return _id as id
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=404, detail="Not found, invalid id")
+
     result = await db.test.test_collection.find_one({"_id": ObjectId(id)})
     if result is None:
         raise HTTPException(status_code=404, detail="Not found")
-    return result
+    return serialize(result)
 
 
 @items.put("/{id}", response_model=Item)
