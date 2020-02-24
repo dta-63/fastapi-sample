@@ -15,9 +15,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 fileConfig(os.path.join(basedir, 'logging.ini'), disable_existing_loggers=False)
 
 app = FastAPI(
-    title="Service example",
-    description="Simple api using Fast api framework",
-    version="1.0.0"
+    title="SERVICE_NAME",
+    description="SERVICE_DESCRIPTION",
+    version=os.getenv('VERSION')
 )
 
 app.add_exception_handler(HTTPException, http_error_handler)

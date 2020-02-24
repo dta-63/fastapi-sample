@@ -10,8 +10,6 @@ jobs:
       - run:
           name: Setup VirtualEnv
           command: |
-            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=fastapi-sample' >> $BASH_ENV 
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
