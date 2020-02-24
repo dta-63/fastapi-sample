@@ -2,6 +2,8 @@
 env/
 logs/
 .vscode/
+.pytest_cache/
 __pycache__/
 **/__pycache__/**
 bash.exe.stackdump
+.coverage

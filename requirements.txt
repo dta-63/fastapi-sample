@@ -5,3 +5,4 @@ python-jose[cryptography]
 motor
 python-dotenv
 cachetools
+pytest

@@ -19,8 +19,7 @@ Example of a python microservices using FastApi framework
 - [x] Authentication check (Test with keycloak)
 - [x] Authentication roles check (Test with keycloak)
 - [ ] Gitlab CI
-- [ ] Unit test
-- [ ] Test coverage
+- [x] Unit test with pytest
 - [x] Cache
 - [ ] Kafka connector
 
@@ -32,6 +31,12 @@ Example of a python microservices using FastApi framework
 - Access to http://127.0.0.1:8080/
 - Access to http://127.0.0.1:8080/docs for swagger
 - Access to http://127.0.0.1:8080/redoc for Redoc
+
+## Tests
+
+- Write tests in `tests` folder
+- File pattern should be `*_test.py`
+- Run with the command `pytest`
 
 ## Helpfull links
 
