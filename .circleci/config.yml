@@ -20,5 +20,6 @@ jobs:
       - run:
           name: Running tests
           command: |
+            export SERVICE_VERSION=1.0.0
             . venv/bin/activate
             pytest

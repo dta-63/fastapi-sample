@@ -17,7 +17,7 @@ fileConfig(os.path.join(basedir, 'logging.ini'), disable_existing_loggers=False)
 app = FastAPI(
     title="SERVICE_NAME",
     description="SERVICE_DESCRIPTION",
-    version=os.getenv('VERSION')
+    version=os.getenv('SERVICE_VERSION')
 )
 
 app.add_exception_handler(HTTPException, http_error_handler)
