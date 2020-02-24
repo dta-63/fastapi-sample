@@ -1,18 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
+from bson import ObjectId
+from starlette.responses import Response
+
 from api.models.item import Item, ItemIn
 from tools.security import Auth, User
 from tools.mongo import get_db, AsyncIOMotorClient
 from tools.serialization import serialize
-from bson import ObjectId
 
 items = APIRouter()
 
 
 @items.get("/", response_model=List[Item])
-async def read_items(db: AsyncIOMotorClient = Depends(get_db)):
+async def read_items(limit: int = 10, skip: int = 0, db: AsyncIOMotorClient = Depends(get_db)):
     return serialize(
-        await db.test.test_collection.find().to_list(length=100)
+        await db.test.test_collection.find()
+                .skip(skip)
+                .limit(limit)
+                .to_list(length=limit)
     )
 
 
@@ -39,6 +44,17 @@ async def read_item(id: str, db: AsyncIOMotorClient = Depends(get_db)):
     if result is None:
         raise HTTPException(status_code=404, detail="Not found")
     return serialize(result)
+
+
+@items.delete("/{id}")
+async def delete_item(id: str, db: AsyncIOMotorClient = Depends(get_db)):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=404, detail="Not found, invalid id")
+
+    result = await db.test.test_collection.delete_one({"_id": ObjectId(id)})
+    if result is None:
+        raise HTTPException(status_code=404, detail="Not found")
+    return Response(status_code=204)
 
 
 @items.put("/{id}", response_model=Item)
