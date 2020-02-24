@@ -1,4 +1,7 @@
+
 # FastApi sample
+
+[![CircleCI](https://circleci.com/gh/david-talabard/fastapi-sample.svg?style=svg)](https://circleci.com/gh/david-talabard/fastapi-sample)
 
 Example of a python microservices using FastApi framework
 
@@ -44,3 +47,4 @@ Example of a python microservices using FastApi framework
 - [Python 3](https://www.python.org/)
 - [Starlette](https://www.starlette.io/websockets/)
 - [FastAPI](https://fastapi.tiangolo.com//)
+
