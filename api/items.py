@@ -48,6 +48,8 @@ async def update_item(
     db: AsyncIOMotorClient = Depends(get_db),
     user: User = Depends(Auth(roles=['admin']))
 ):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=404, detail="Not found, invalid id")
     doc = {
         "name": item.name,
         "createdBy": user.given_name
