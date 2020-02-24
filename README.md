@@ -18,7 +18,7 @@ Example of a python microservices using FastApi framework
 - [x] Mongo connector with Motor
 - [x] Authentication check (Test with keycloak)
 - [x] Authentication roles check (Test with keycloak)
-- [ ] Gitlab CI
+- [x] CI
 - [x] Unit test with pytest
 - [x] Cache
 - [ ] Kafka connector
