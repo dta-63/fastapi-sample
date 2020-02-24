@@ -48,3 +48,6 @@ Example of a python microservices using FastApi framework
 - [Starlette](https://www.starlette.io/websockets/)
 - [FastAPI](https://fastapi.tiangolo.com//)
 
+## Init other micro service
+
+- Use the script `./init_from_sample.sh`
