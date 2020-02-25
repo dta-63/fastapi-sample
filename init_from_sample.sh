@@ -5,10 +5,10 @@ read -p "Project full name: "  fullname
 read -p "Project description: "  description
 read -p "Repository path: "  remote
 
-git clone https://github.com/david-talabard/fastapi-sample.git
-mv fastapi-sample $name
-git remote set-url origin $remote
+cd ..
+git clone https://github.com/david-talabard/fastapi-sample.git $name
 cd $name
+git remote set-url origin $remote
 ./make.sh
 mv .env-sample .env
 echo "env file configure .env"
