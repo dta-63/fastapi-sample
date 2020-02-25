@@ -15,7 +15,6 @@ Example of a python microservices using FastApi framework
 ## Features
 
 - [x] Service documentation (Open api)
-- [x] Logger
 - [x] Multiple environments with dotenv
 - [x] Docker
 - [x] Mongo connector with Motor

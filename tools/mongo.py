@@ -3,6 +3,8 @@ import os
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
+logger = logging.getLogger(__name__)
+
 
 class DataBase:
     client: AsyncIOMotorClient = None
@@ -16,10 +18,10 @@ async def get_db() -> AsyncIOMotorClient:
 
 
 async def connect():
-    logging.info('Mongo connection starting...')
+    logger.info('Mongo connection starting...')
     db.client = AsyncIOMotorClient(os.getenv('MONGODB_URL'))
 
 
 async def disconnect():
-    logging.info('Mongo connection ending...')
+    logger.info('Mongo connection ending...')
     db.client.close()
