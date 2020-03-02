@@ -4,10 +4,10 @@ import requests
 from typing import Dict, List, Optional, Any
 from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.requests import Request
 from jose import jwt, jwk, JWTError
 from jose.utils import base64url_decode
 from pydantic import BaseModel
-from starlette.requests import Request
 from cachetools import cached, TTLCache
 
 
