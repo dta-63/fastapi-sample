@@ -1,5 +1,6 @@
 
 from pydantic import BaseModel
+from api.models.db import DBModelMixin
 
 
 class ItemIn(BaseModel):
@@ -9,10 +10,9 @@ class ItemIn(BaseModel):
     name: str
 
 
-class Item(BaseModel):
+class Item(DBModelMixin):
     """
     Defined an item model
     """
-    id: str
     name: str
     createdBy: str
