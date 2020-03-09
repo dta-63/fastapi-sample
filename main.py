@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from api import router as api_router
-from api.consumers import items_consumer_callback
+# from api.consumers import items_consumer_callback
 from tools import kafka, mongo
 
 app = FastAPI(
@@ -24,7 +24,7 @@ app.include_router(api_router)
 def startup_event():
     mongo.connect()
     kafka.create_producer()
-    kafka.add_consumer(['items'], items_consumer_callback)
+    # kafka.add_consumer(['items'], items_consumer_callback)
 
 
 @app.on_event("shutdown")
