@@ -1,5 +1,5 @@
 
-from api.models.db import DBModelMixin
+from api.models.base import DBModelMixin
 
 
 class Other(DBModelMixin):

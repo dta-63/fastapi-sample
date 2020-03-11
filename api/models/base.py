@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional, Any
+from typing import Any, Optional, Generic, TypeVar, List
 from bson import ObjectId
+from pydantic import BaseModel
+from pydantic.generics import GenericModel
 
 
 class ObjectIdStr(str):
@@ -24,5 +25,21 @@ class DBModelMixin(BaseModel):
         super().__init__(**data)
 
     class Config:
-        allow_population_by_field_name = True
+        json_encoders = {ObjectId: lambda x: str(x)}
+
+
+T = TypeVar('T')
+
+
+class Pagination(GenericModel, Generic[T]):
+    """
+    Pagination model
+    Wrap a generic list of items with skip, limit and counter
+    """
+    limit: int = 10
+    skip: int = 0
+    count: int = 0
+    items: List[T] = []
+
+    class Config:
         json_encoders = {ObjectId: lambda x: str(x)}

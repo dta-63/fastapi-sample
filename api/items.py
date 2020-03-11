@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 
-from typing import List
 from bson import ObjectId
 from bson.errors import InvalidId
 
+from api.models.base import Pagination
 from api.models.item import Item, ItemIn
 from tools.security import Auth, User
 from tools.mongo import get_db, AsyncIOMotorClient
@@ -14,13 +14,16 @@ items = APIRouter()
 # producer_kafka_topic = "items"
 
 
-@items.get("/", response_model=List[Item])
+@items.get("/", response_model=Pagination[Item])
 async def read_items(
     limit: int = 10,
     skip: int = 0,
     db: AsyncIOMotorClient = Depends(get_db)
 ):
-    return await db.test.test_collection.find().skip(skip).limit(limit).to_list(length=limit)
+    result = Pagination(limit=limit, skip=skip)
+    result.count = await db.test.test_collection.count_documents({})
+    result.items = await db.test.test_collection.find().skip(skip).limit(limit).to_list(length=limit)
+    return result
 
 
 @items.post("/", response_model=Item, status_code=201)

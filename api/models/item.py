@@ -1,6 +1,6 @@
 
 from pydantic import BaseModel
-from api.models.db import DBModelMixin
+from api.models.base import DBModelMixin
 
 
 class ItemIn(BaseModel):
