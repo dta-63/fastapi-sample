@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from typing import Optional
 from cachetools import cached, TTLCache
 from api.models.other import Other
@@ -15,10 +13,9 @@ others = APIRouter()
 @others.get("/", response_model=List[Other])
 @cached(cache)
 def read_other_data(required: str, optional: Optional[str] = None):
-    others = [
+    return [
         Other(**{
             "_id": ObjectId("5df9e0fecdd49b0030b58622"),
             "test": "Test 1"
         })
     ]
-    return JSONResponse(content=jsonable_encoder(list(others), by_alias=False))

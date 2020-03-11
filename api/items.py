@@ -3,6 +3,7 @@ from fastapi.responses import Response
 
 from typing import List
 from bson import ObjectId
+from bson.errors import InvalidId
 
 from api.models.item import Item, ItemIn
 from tools.security import Auth, User
@@ -25,7 +26,7 @@ async def read_items(
     ))
 
 
-@items.post("/", response_model=Item)
+@items.post("/", response_model=Item, status_code=201)
 async def create_item(
     item: ItemIn,
     db: AsyncIOMotorClient = Depends(get_db),
@@ -84,16 +85,17 @@ async def update_item(
     return Item(**item)
 
 
-@items.delete("/{id}")
-async def delete_item(
-    id: str,
+@items.delete("/{ids}")
+async def delete_items(
+    ids: str,
     db: AsyncIOMotorClient = Depends(get_db)
 ):
-    if not ObjectId.is_valid(id):
-        raise HTTPException(status_code=404, detail="Not found, invalid id")
+    try:
+        ids = list(map(lambda x: ObjectId(x), ids.split(',')))
+    except InvalidId:
+        raise HTTPException(status_code=404, detail="Not found, invalid id list")
 
-    result = await db.test.test_collection.delete_one({"_id": ObjectId(id)})
-    if result is None:
+    result = await db.test.test_collection.delete_many({"_id": {"$in": ids}})
+    if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Not found")
     return Response(status_code=204)
-
