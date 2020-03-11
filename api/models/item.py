@@ -10,9 +10,8 @@ class ItemIn(BaseModel):
     name: str
 
 
-class Item(DBModelMixin):
+class Item(DBModelMixin, ItemIn):
     """
     Defined an item model
     """
-    name: str
     createdBy: str

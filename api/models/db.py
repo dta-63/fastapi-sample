@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel
+from typing import Optional, Any
 from bson import ObjectId
 
 
@@ -16,7 +16,12 @@ class ObjectIdStr(str):
 
 
 class DBModelMixin(BaseModel):
-    id: Optional[ObjectIdStr] = Field(..., alias="_id")
+    id: Optional[ObjectIdStr]
+
+    def __init__(self, **data: Any):
+        if '_id' in data:
+            data['id'] = data.pop('_id')
+        super().__init__(**data)
 
     class Config:
         allow_population_by_field_name = True
