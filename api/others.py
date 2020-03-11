@@ -14,8 +14,8 @@ others = APIRouter()
 @cached(cache)
 def read_other_data(required: str, optional: Optional[str] = None):
     return [
-        Other(**{
+        {
             "_id": ObjectId("5df9e0fecdd49b0030b58622"),
             "test": "Test 1"
-        })
+        }
     ]

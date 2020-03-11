@@ -20,10 +20,7 @@ async def read_items(
     skip: int = 0,
     db: AsyncIOMotorClient = Depends(get_db)
 ):
-    return list(map(
-        lambda x: Item(**x),
-        await db.test.test_collection.find().skip(skip).limit(limit).to_list(length=limit)
-    ))
+    return await db.test.test_collection.find().skip(skip).limit(limit).to_list(length=limit)
 
 
 @items.post("/", response_model=Item, status_code=201)
@@ -60,7 +57,7 @@ async def read_item(
     item = await db.test.test_collection.find_one({"_id": ObjectId(id)})
     if item is None:
         raise HTTPException(status_code=404, detail="Not found")
-    return Item(**item)
+    return item
 
 
 @items.put("/{id}", response_model=Item)
@@ -81,8 +78,7 @@ async def update_item(
         "_id": ObjectId(id)
     }
     await db.test.test_collection.update_one(query, {'$set': doc})
-    item = {**doc, **query}
-    return Item(**item)
+    return {**doc, **query}
 
 
 @items.delete("/{ids}")
