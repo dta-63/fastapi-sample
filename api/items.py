@@ -3,6 +3,7 @@ from fastapi.responses import Response
 
 from bson import ObjectId
 from bson.errors import InvalidId
+from typing import List
 
 from api.models.base import Pagination
 from api.models.item import Item, ItemIn
@@ -84,13 +85,27 @@ async def update_item(
     return {**doc, **query}
 
 
-@items.delete("/{ids}")
-async def delete_items(
-    ids: str,
+@items.delete("/{id}")
+async def delete_item(
+    id: str,
+    db: AsyncIOMotorClient = Depends(get_db)
+):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=404, detail="Not found, invalid id")
+
+    result = await db.test.test_collection.delete_one({"_id": ObjectId(id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Not found")
+    return Response(status_code=204)
+
+
+@items.delete("/")
+async def delete_multiple_items(
+    ids: List[str],
     db: AsyncIOMotorClient = Depends(get_db)
 ):
     try:
-        ids = list(map(lambda x: ObjectId(x), ids.split(',')))
+        ids = list(map(lambda x: ObjectId(x), ids))
     except InvalidId:
         raise HTTPException(status_code=404, detail="Not found, invalid id list")
 
