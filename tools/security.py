@@ -33,11 +33,11 @@ class JWKS(BaseModel):
 
 
 class User(BaseModel):
-    name: str
+    name: Optional[str]
     preferred_username: str
-    given_name: str
-    locale: str
-    family_name: str
+    given_name: Optional[str]
+    locale: Optional[str]
+    family_name: Optional[str]
     email: str
     realm_access: Any
     resource_access: Any
@@ -73,7 +73,7 @@ class Auth(OAuth2PasswordBearer):
                 raise unauthorized
             if len(self.roles) > 0:
                 # Check roles using token informations
-                roles = user.realm_access['roles']
+                roles = [] if not user.realm_access else user.realm_access['roles']
                 client_id = os.getenv('SSO_CLIENT')
                 if client_id is not None and user.resource_access[client_id]:
                     roles = roles + user.resource_access[client_id]['roles']
