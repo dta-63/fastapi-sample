@@ -1,5 +1,5 @@
 cachetools==4.0.0
-fastapi==0.52.0
+fastapi==0.65.2
 uvicorn==0.11.3
 requests==2.23.0
 motor==2.1.0
